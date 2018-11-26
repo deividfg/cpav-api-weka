@@ -46,6 +46,33 @@ https://www.lynda.com
 
 SELECT distinct NUANO, NUVOLUME, NUTRAMITE, FLTIPOPROCESSO, CDTIPOPARECER, CDMOTIVOTRAMI, FLPARECERASSINADO, FLTRAMIASSINADA, FLULTIMO, FLSITUACAO, FLSIGILOSO, FLPERMITERECUSA, FLBLOQUEIATRAMI, CDORGAOORIGEM, CDORGAOTRAMI FROM VCPAULTTRAMITEVOL
 
+SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPOPARECER, proc.CDSETORGESTAO, proc.CDSETORABERTURA, proc.CDSETORAUTUACAO, proc.FLSITUACAO, proc.FLRESULTADO, proc.FLPROCESSO, proc.CDTIPOPROCESSO, trami.FLPERMITERECUSA, trami.CDORGAOORIGEM, trami.CDORGAOTRAMI 
+	FROM ECPAULTTRAMIVOL trami
+	INNER JOIN ECPAPROCESSO proc
+		ON trami.CDORGAOSETOR = proc.CDORGAOSETOR
+		AND trami.NUANO = proc.NUANO
+		AND trami.NUPROCESSO = proc.NUPROCESSO
+	WHERE proc.CDSISTEMA = 64
+		AND trami.CDORGAOORIGEM IS NOT NULL 
+		AND trami.CDORGAOTRAMI IS NOT NULL
+
+SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPOPARECER, proc.CDSETORGESTAO, proc.CDSETORABERTURA, proc.CDSETORAUTUACAO, proc.FLSITUACAO, proc.FLRESULTADO, proc.FLPROCESSO, proc.CDTIPOPROCESSO, trami.FLPERMITERECUSA, trami.dtencaminha - trami.dtrecebto, tramiAnterior.CDORGAOTRAMI, trami.CDORGAOTRAMI 
+	FROM ECPATRAMITACAO trami
+	INNER JOIN ECPAPROCESSO proc
+		ON trami.CDORGAOSETOR = proc.CDORGAOSETOR
+		AND trami.NUANO = proc.NUANO
+		AND trami.NUPROCESSO = proc.NUPROCESSO
+	INNER JOIN ECPATRAMITACAO tramiAnterior
+		ON trami.cdOrgaosetor = tramiAnterior.cdOrgaosetor
+		AND trami.nuAno = tramiAnterior.nuAno
+		AND trami.nuProcesso = tramiAnterior.nuProcesso
+		AND trami.nuTramiAnterior = tramiAnterior.nuTramite
+	WHERE proc.CDSISTEMA = 64
+		AND trami.CDORGAOTRAMI IS NOT NULL 
+		AND tramiAnterior.CDORGAOTRAMI IS NOT NULL
+		--and proc.nuano = 2018 and proc.nuprocesso = 60
+	--order by trami.nutramite
+		
 https://github.com/tahaemara/weka-example
 https://github.com/akquinet/machine-learning-weka-tutorial
 
