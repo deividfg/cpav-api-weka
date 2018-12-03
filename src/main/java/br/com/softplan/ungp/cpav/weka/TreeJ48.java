@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class TreeJ48 {
 	public void testWekaJ48() throws Exception {
-        Instances data = getData("/iris.arff", 1);
+        Instances data = getData("/data/tramitacoes.csv", 1);
         // mit numInstances() kann die Zahl der Zeilen im Datensatz ausgegeben werden
         System.out.println(data.numInstances() + " Zeilen im Datensatz");
         // ZeroR: Simpelster Klassifikator
@@ -80,7 +80,7 @@ public class TreeJ48 {
 
     }
 
-    /** Erzeugt ein Evaluation Objekt, mit dem der Klassifikator auf die gegebenen Daten angewendet wird.
+    /** Cria um objeto de avaliação que aplica o classificador aos dados fornecidos.
      *
      * @param classifier Der Klassifikator
      * @param data Die Daten
@@ -103,7 +103,7 @@ public class TreeJ48 {
      */
     private Instances getData( String filename, Integer posClass ) throws IOException, URISyntaxException {
         // Einlesen der Daten
-        File file = new File(TreeJ48.class.getResource( filename ).toURI());
+        File file = new File(TreeJ48.class.getResource( "\\data\\tramitacoes.csv").toURI());
         BufferedReader inputReader = new BufferedReader(new FileReader(file));
         // Erstelle einen Datensatz der Klasse Instances
         Instances data = new Instances(inputReader);
