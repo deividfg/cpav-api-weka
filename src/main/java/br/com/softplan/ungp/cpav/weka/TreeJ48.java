@@ -103,7 +103,7 @@ public class TreeJ48 {
      */
     private Instances getData( String filename, Integer posClass ) throws IOException, URISyntaxException {
         // Einlesen der Daten
-        File file = new File(TreeJ48.class.getResource( "\\data\\tramitacoes.csv").toURI());
+        File file = new File(TreeJ48.class.getResource( "tramitacoes.csv").toURI());
         BufferedReader inputReader = new BufferedReader(new FileReader(file));
         // Erstelle einen Datensatz der Klasse Instances
         Instances data = new Instances(inputReader);
