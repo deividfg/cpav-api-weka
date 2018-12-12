@@ -1,48 +1,10 @@
-http://blog.uplexis.com.br/como-obter-dados-cadastrais-de-uma-empresa/
-
-https://www.receita.fazenda.gov.br/PessoaJuridica/CNPJ/cnpjreva/Cnpjreva_Solicitacao2.asp
-http://www.sintegra.gov.br/
-https://www.situacaocadastral.com.br/
-
-http://sintegraws.com.br
-
-http://sistemas3.sef.sc.gov.br/sintegra/consulta_empresa_pesquisa.aspx
-
-empresometro
-
-http://transparencia.gov.br/download-de-dados/licitacoes
-http://www.transparencia.mpf.mp.br/
-https://transparencia.mpsc.mp.br
-http://dados.gov.br/
-
-
-https://jarbas.serenata.ai
-http://dados.gov.br/aplicativo/operacao-serenata-de-amor
-https://github.com/okfn-brasil/serenata-de-amor
-
-https://admjamil.jusbrasil.com.br/artigos/259417931/uma-analise-dos-crimes-de-licitacao-e-de-suas-penas-conforme-secao-iii-da-lei-n-8666-93
-
 ETL e o processo de transformação de dados, Extract Transform Load
 
-indicação de próximas tramitações
-
+*indicação de próximas tramitações
 
 melhorar a previsão orçamentária
 
 https://minha.softplan.com.br/proxy/1ec7491a/https/colabore.softplan.com.br/pages/viewpage.action?pageId=334400246
-https://www.softplan.com.br/tratadoaprendizagem/projetos-concluidos/
-
-
-https://www.sollicita.com.br/Noticia/?p_idNoticia=11338&n=como-as-fraudes-em-licita%C3%A7%C3%B5es-s%C3%A3o-desmascaradas-pelo-tcu
-http://www.portaldelicitacao.com.br/site/noticias/seis-tipos-de-fraudes-sao-mais-comuns-nas-licitacoes/
-
-https://paulovasconcellos.com.br/como-criar-gr%C3%A1ficos-interativos-utilizando-plotly-e-python-3eb6eda57a2b?source=rss----c91030c9fa86---4
-
-https://medium.com/@cristianofurquim/10-algoritmos-de-aprendizagem-de-m%C3%A1quinas-machine-learning-que-voc%C3%AA-precisa-saber-c49f9eefe319
-
-https://www.datacamp.com/pricing
-https://cognitiveclass.ai/
-https://www.lynda.com
 
 SELECT distinct NUANO, NUVOLUME, NUTRAMITE, FLTIPOPROCESSO, CDTIPOPARECER, CDMOTIVOTRAMI, FLPARECERASSINADO, FLTRAMIASSINADA, FLULTIMO, FLSITUACAO, FLSIGILOSO, FLPERMITERECUSA, FLBLOQUEIATRAMI, CDORGAOORIGEM, CDORGAOTRAMI FROM VCPAULTTRAMITEVOL
 
@@ -76,4 +38,20 @@ SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPO
 https://github.com/tahaemara/weka-example
 https://github.com/akquinet/machine-learning-weka-tutorial
 
+https://www.univali.br/graduacao/direito-itajai/publicacoes/revista-filosofia-do-direito-e-intersubjetividade/formatacao%20do-artigo/Paginas/default.aspx
 https://dzone.com/articles/introduction-weka
+https://www.devmedia.com.br/extracao-de-arvores-de-decisao-com-a-ferramenta-de-data-mining-weka/3388
+https://sosgisbr.com/tag/arvore-de-decisao/
+https://www.ibm.com/developerworks/br/opensource/library/os-weka2/index.html
+http://minerandodados.com.br/index.php/2017/04/02/ciencia-dados-weka/#aplicando_machine_learning
+https://medium.com/@cristianofurquim/10-algoritmos-de-aprendizagem-de-m%C3%A1quinas-machine-learning-que-voc%C3%AA-precisa-saber-c49f9eefe319
+
+2 - fundamentação do j48
+
+3 - implementação
+	seleção dos dados
+
+HoeffdingTree 63
+J48 69
+RandomTree 69
+REPTree 69
