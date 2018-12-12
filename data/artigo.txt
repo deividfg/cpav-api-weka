@@ -34,7 +34,30 @@ SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPO
 		AND tramiAnterior.CDORGAOTRAMI IS NOT NULL
 		--and proc.nuano = 2018 and proc.nuprocesso = 60
 	--order by trami.nutramite
-		
+
+
+-----Consulta do petroski
+SELECT PA.CDASSUNTO AS CDASSUNTO, P.cdSetorGestao AS CDSETORRESP, TORIG.CDORGAOTRAMI AS CDSETORORIGEM, TORIG.cdUsuarioEncaminha AS CDUSUARIO, TDEST.CDORGAOTRAMI AS CDSETORDESTINO
+FROM ECPATRAMITACAO TDEST
+    INNER JOIN ECPATRAMITACAO TORIG
+        ON  TDEST.CDORGAOSETOR = TORIG.CDORGAOSETOR
+        AND TDEST.NUANO = TORIG.NUANO
+        AND TDEST.NUPROCESSO = TORIG.NUPROCESSO
+        AND TDEST.Nutramite = TORIG.NUTRAMIANTERIOR
+    INNER JOIN ECPAPROCESSO P
+        ON  TDEST.CDORGAOSETOR = P.CDORGAOSETOR
+        AND TDEST.NUANO = P.NUANO
+        AND TDEST.NUPROCESSO = P.NUPROCESSO
+    INNER JOIN ECPAPROCASSUNTO PA
+        ON  PA.CDORGAOSETOR = P.CDORGAOSETOR
+        AND PA.NUANO = P.NUANO
+        AND PA.NUPROCESSO = P.NUPROCESSO
+        AND PA.FLPRINCIPAL='S'
+WHERE 1=1
+    AND COALESCE(TORIG.flAutomatica,'N') = 'N'
+    AND TORIG.CDORGAOSETOR =  1     AND TORIG.NUANO =  '2017'
+
+
 https://github.com/tahaemara/weka-example
 https://github.com/akquinet/machine-learning-weka-tutorial
 
@@ -51,7 +74,7 @@ https://medium.com/@cristianofurquim/10-algoritmos-de-aprendizagem-de-m%C3%A1qui
 3 - implementação
 	seleção dos dados
 
-HoeffdingTree 63
-J48 69
-RandomTree 69
-REPTree 69
+HoeffdingTree 63% -L 2 -S 1 -E 1.0E-7 -H 0.05 -M0.01 -G 200.0 -N 0.0
+J48 69% -C 0.25 -M 2
+RandomTree 69% -K 4 -M 1.0 -V 0.001 -S 1
+REPTree 69% -M 2 -V 0.001 -N 3 -S 1 -L -1 -I 0.0

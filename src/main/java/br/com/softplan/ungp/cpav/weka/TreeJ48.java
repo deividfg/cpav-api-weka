@@ -2,13 +2,10 @@ package br.com.softplan.ungp.cpav.weka;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.rules.ZeroR;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import weka.gui.treevisualizer.PlaceNode2;
-import weka.gui.treevisualizer.TreeVisualizer;
-
-import javax.swing.*;
+import weka.filters.Filter;
+import weka.filters.unsupervised.instance.RemoveWithValues;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,98 +15,73 @@ import java.util.Random;
 
 public class TreeJ48 {
 	public void testWekaJ48() throws Exception {
-        Instances data = getData("/data/tramitacoes.csv", 1);
-        // mit numInstances() kann die Zahl der Zeilen im Datensatz ausgegeben werden
-        System.out.println(data.numInstances() + " Zeilen im Datensatz");
-        // ZeroR: Simpelster Klassifikator
-        ZeroR simplestClassifier = new ZeroR();
-        // J48: Entscheidungsbaum-Algorithmus
-        J48 decisionTree = new J48();
 
-        String[] options = new String[2];
-        // Minimale Fälle pro Blatt: -M
-        options[0] = "-M";
-        // Anzahl 5
-        options[1] = "5";
-        decisionTree.setOptions(options);
+		//Dados
+		Instances data = getData("/tramitacoes.arff", 1);
+		System.out.println(data.numInstances() + " Registros");
 
-        // build classifier
-        decisionTree.buildClassifier(data);
-        // print classifier
-        System.out.println(decisionTree);
+		// Algoritimo J48
+		J48 j48 = new J48();
 
-        // Anzahl der Iterationen für die Kreuzvalidierung
-        Integer numIterations = 10;
-        Random randData = new Random(1);
-        Evaluation evalSimpClass = evalModel(simplestClassifier, data, numIterations, randData);
-        Evaluation evalTree = evalModel(decisionTree, data, numIterations, randData);
-        // Modellfit Simpler Klassifikator
-        System.out.println("Modellfit Simpler Klassifikator: \n" + evalSimpClass.toSummaryString());
-        // Konfusionsmatrix
-        System.out.println(evalSimpClass.toMatrixString());
-        // Modellfit Entscheidungsbaum
-        System.out.println("Modellfit Entscheidungsbaum: \n" + evalTree.toSummaryString());
-        // Konfusionsmatrix
-        System.out.println(evalTree.toMatrixString());
+		// Opcoes do J48
+		String[] options = new String[4];
+		options[0] = "-C"; // Definição do limite de confianca para a remocao.
+		options[1] = "0.25"; // Valor do limite de confianca.
+		options[2] = "-M"; // Definir o numero minimo de instancias por folha.
+		options[3] = "2"; // Valor do numero minimo de instancias.
+		j48.setOptions(options);
 
-        // display classifier
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                TreeVisualizer visualizeTree = null;
-                try {
-                    visualizeTree = new TreeVisualizer( null, decisionTree.graph(), new PlaceNode2());
-                    final JFrame jFrame = new JFrame("Weka J48 Klassisfikator: Entscheidungsbaum");
-                    jFrame.setSize(600,500);
-                    jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    jFrame.getContentPane().add(visualizeTree);
-                    jFrame.setVisible(true);
-                    visualizeTree.fitToScreen();
-                } catch ( Exception e ) {
-                    e.printStackTrace();
-                }
-            }
-        });
+		//Deixando somente o cdSetoranterior = 10, para testes
+		RemoveWithValues filter = new RemoveWithValues();
 
-        Instances newData = getData("/iris_new.arff", 1);
-        for (int i = 0; i < newData.numInstances(); i++) {
-            double result = decisionTree.classifyInstance(newData.instance(i));
-            newData.instance(i).setValue(newData.numAttributes() - 1, newData.classAttribute().value((int) result));
-        }
-        System.out.println(newData);
+		String[] optionsFilter = new String[5];
+		optionsFilter[0] = "-C"; // Escolha do atributo a ser usado na selecao
+		optionsFilter[1] = "9"; // Indice do atributo usado na selecao
+		optionsFilter[2] = "-L"; // Escolha do valor do atributo a ser usado na selecao
+		optionsFilter[3] = "8"; // Indice do valor usado na selecao
+		optionsFilter[4] = "-V"; // Inversão da seleção, ou seja, remove todos os outros valores.
+		filter.setOptions(optionsFilter);
 
-    }
+		filter.setInputFormat(data);
+		Instances newData = Filter.useFilter(data, filter);
 
-    /** Cria um objeto de avaliação que aplica o classificador aos dados fornecidos.
-     *
-     * @param classifier Der Klassifikator
-     * @param data Die Daten
-     * @param numberIterations Die Anzahl der Unterteilungen des Datensatzes während der Kreuzvalidierung
-     * @param randData Ein Zufallszahlengenerator
-     * @return Das Evaluation Objekt
-     */
-    private Evaluation evalModel(
-            Classifier classifier, Instances data, Integer numberIterations, Random randData ) throws Exception {
-        Evaluation eval = new Evaluation(data);
-        eval.crossValidateModel(classifier, data, numberIterations, randData);
-        return eval;
-    }
+		// Construindo o classificador
+		j48.buildClassifier(newData);
 
-    /** Liest aus einer ARFF Datei Daten mit Attribut- und Datenbeschreibungen
-     *
-     * @param filename Pfad und Name der Datei
-     * @param posClass 1-basierter Index der Klassendefinition vom Ende der Attributliste aus gesehen.
-     * @return Ein Instances Objekt
-     */
-    private Instances getData( String filename, Integer posClass ) throws IOException, URISyntaxException {
-        // Einlesen der Daten
-        File file = new File(TreeJ48.class.getResource( "tramitacoes.csv").toURI());
-        BufferedReader inputReader = new BufferedReader(new FileReader(file));
-        // Erstelle einen Datensatz der Klasse Instances
-        Instances data = new Instances(inputReader);
-        // Bestimme letztes Attribut als Zielklasse
-        data.setClassIndex(data.numAttributes() - posClass);
+		Integer numIterations = 10; // Numero de iteracoes do crossValidator
+		Random randData = new Random(1); // indice do gerador de numeros aleatorios
+		Evaluation evalTree = evalModel(j48, newData, numIterations, randData);
+		System.out.println("Resultado: \n" + evalTree.toSummaryString());
 
-        return data;
-}
+	}
+
+	/** Cria um objeto de avaliacao que aplica o classificador aos dados fornecidos.
+	 *
+	 * @param classifier classificador
+	 * @param data dados
+	 * @param numberIterations Numero de iteracoes do crossValidator
+	 * @param randData indice do gerador de numeros aleatorios
+	 * @return objeto de avaliacao
+	 */
+	private Evaluation evalModel(
+			Classifier classifier, Instances data, Integer numberIterations, Random randData ) throws Exception {
+		Evaluation eval = new Evaluation(data);
+		eval.crossValidateModel(classifier, data, numberIterations, randData);
+		return eval;
+	}
+
+	/** Leitura dos dados
+	 *
+	 * @param filename caminho e nome do arquivo
+	 * @param posClass indice baseado na definicao de classe vista no final da lista de atributos.
+	 * @return objeto de instancia
+	 */
+	private Instances getData( String filename, Integer posClass ) throws IOException, URISyntaxException {
+		File file = new File(TreeJ48.class.getResource(filename).toURI());
+		BufferedReader inputReader = new BufferedReader(new FileReader(file));
+		Instances data = new Instances(inputReader);
+		data.setClassIndex(data.numAttributes() - posClass);
+
+		return data;
+	}
 }
