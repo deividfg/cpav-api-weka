@@ -2,7 +2,10 @@ package br.com.softplan.ungp.cpav.weka;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.trees.HoeffdingTree;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.REPTree;
+import weka.classifiers.trees.RandomTree;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.instance.RemoveWithValues;
@@ -22,14 +25,23 @@ public class TreeJ48 {
 
 		// Algoritimo J48
 		J48 j48 = new J48();
-
+		
+		// Algoritmo HoeffdingTree
+		HoeffdingTree hoeffdingTree = new HoeffdingTree();
+		
+		// Algoritmo RandomTree
+		RandomTree randomTree = new RandomTree();
+		
+		// Algoritimo REPTree
+		REPTree repTree = new REPTree();
+		
 		// Opcoes do J48
 		String[] options = new String[4];
 		options[0] = "-C"; // Definição do limite de confianca para a remocao.
 		options[1] = "0.25"; // Valor do limite de confianca.
 		options[2] = "-M"; // Definir o numero minimo de instancias por folha.
 		options[3] = "2"; // Valor do numero minimo de instancias.
-		j48.setOptions(options);
+		repTree.setOptions(options);
 
 		//Deixando somente o cdSetoranterior = 10, para testes
 		RemoveWithValues filter = new RemoveWithValues();
@@ -46,11 +58,11 @@ public class TreeJ48 {
 		Instances newData = Filter.useFilter(data, filter);
 
 		// Construindo o classificador
-		j48.buildClassifier(newData);
+		repTree.buildClassifier(newData);
 
 		Integer numIterations = 10; // Numero de iteracoes do crossValidator
 		Random randData = new Random(1); // indice do gerador de numeros aleatorios
-		Evaluation evalTree = evalModel(j48, newData, numIterations, randData);
+		Evaluation evalTree = evalModel(repTree, newData, numIterations, randData);
 		System.out.println("Resultado: \n" + evalTree.toSummaryString());
 
 	}
