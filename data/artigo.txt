@@ -2,8 +2,6 @@ ETL e o processo de transformação de dados, Extract Transform Load
 
 *indicação de próximas tramitações
 
-melhorar a previsão orçamentária
-
 https://minha.softplan.com.br/proxy/1ec7491a/https/colabore.softplan.com.br/pages/viewpage.action?pageId=334400246
 
 SELECT distinct NUANO, NUVOLUME, NUTRAMITE, FLTIPOPROCESSO, CDTIPOPARECER, CDMOTIVOTRAMI, FLPARECERASSINADO, FLTRAMIASSINADA, FLULTIMO, FLSITUACAO, FLSIGILOSO, FLPERMITERECUSA, FLBLOQUEIATRAMI, CDORGAOORIGEM, CDORGAOTRAMI FROM VCPAULTTRAMITEVOL
@@ -68,6 +66,8 @@ https://sosgisbr.com/tag/arvore-de-decisao/
 https://www.ibm.com/developerworks/br/opensource/library/os-weka2/index.html
 http://minerandodados.com.br/index.php/2017/04/02/ciencia-dados-weka/#aplicando_machine_learning
 https://medium.com/@cristianofurquim/10-algoritmos-de-aprendizagem-de-m%C3%A1quinas-machine-learning-que-voc%C3%AA-precisa-saber-c49f9eefe319
+
+http://portaldeconteudo.sbc.org.br/index.php/semish
 
 2 - fundamentação do j48
 
