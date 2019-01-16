@@ -16,7 +16,8 @@ SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPO
 		AND trami.CDORGAOORIGEM IS NOT NULL 
 		AND trami.CDORGAOTRAMI IS NOT NULL
 
-SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPOPARECER, proc.CDSETORGESTAO, proc.CDSETORABERTURA, proc.CDSETORAUTUACAO, proc.FLSITUACAO, proc.FLRESULTADO, proc.FLPROCESSO, proc.CDTIPOPROCESSO, trami.FLPERMITERECUSA, trami.dtencaminha - trami.dtrecebto, tramiAnterior.CDORGAOTRAMI, trami.CDORGAOTRAMI 
+--Consulta utilizada
+SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, PA.CDASSUNTO AS CDASSUNTO, trami.CDTIPOPARECER, proc.CDSETORGESTAO AS CDSETORRESP, proc.CDSETORABERTURA, proc.CDSETORAUTUACAO, proc.CDTIPOPROCESSO, tramiAnterior.cdUsuarioEncaminha AS CDUSUARIO, tramiAnterior.CDORGAOTRAMI AS CDSETORORIGEM, trami.CDORGAOTRAMI AS CDSETORDESTINO 
 	FROM ECPATRAMITACAO trami
 	INNER JOIN ECPAPROCESSO proc
 		ON trami.CDORGAOSETOR = proc.CDORGAOSETOR
@@ -27,9 +28,15 @@ SELECT distinct trami.NUANO, trami.FLTIPOPROCESSO, trami.NUTRAMITE, trami.CDTIPO
 		AND trami.nuAno = tramiAnterior.nuAno
 		AND trami.nuProcesso = tramiAnterior.nuProcesso
 		AND trami.nuTramiAnterior = tramiAnterior.nuTramite
+	INNER JOIN ECPAPROCASSUNTO PA
+        ON  PA.CDORGAOSETOR = proc.CDORGAOSETOR
+        AND PA.NUANO = proc.NUANO
+        AND PA.NUPROCESSO = proc.NUPROCESSO
+        AND PA.FLPRINCIPAL='S'
 	WHERE proc.CDSISTEMA = 64
 		AND trami.CDORGAOTRAMI IS NOT NULL 
 		AND tramiAnterior.CDORGAOTRAMI IS NOT NULL
+		AND COALESCE(tramiAnterior.flAutomatica,'N') = 'N'
 		--and proc.nuano = 2018 and proc.nuprocesso = 60
 	--order by trami.nutramite
 

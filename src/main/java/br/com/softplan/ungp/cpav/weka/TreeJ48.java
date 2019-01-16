@@ -5,6 +5,7 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.trees.HoeffdingTree;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.REPTree;
+import weka.classifiers.trees.RandomForest;
 import weka.classifiers.trees.RandomTree;
 import weka.core.Instances;
 import weka.filters.Filter;
@@ -35,36 +36,43 @@ public class TreeJ48 {
 		// Algoritimo REPTree
 		REPTree repTree = new REPTree();
 		
+		// Algoritmo Random Forest
+		RandomForest randomForest = new RandomForest();
+		
 		// Opcoes do J48
 		String[] options = new String[4];
 		options[0] = "-C"; // Definição do limite de confianca para a remocao.
 		options[1] = "0.25"; // Valor do limite de confianca.
 		options[2] = "-M"; // Definir o numero minimo de instancias por folha.
 		options[3] = "2"; // Valor do numero minimo de instancias.
-		repTree.setOptions(options);
+		j48.setOptions(options);
 
 		//Deixando somente o cdSetoranterior = 10, para testes
 		RemoveWithValues filter = new RemoveWithValues();
-
-		String[] optionsFilter = new String[5];
-		optionsFilter[0] = "-C"; // Escolha do atributo a ser usado na selecao
-		optionsFilter[1] = "9"; // Indice do atributo usado na selecao
-		optionsFilter[2] = "-L"; // Escolha do valor do atributo a ser usado na selecao
-		optionsFilter[3] = "8"; // Indice do valor usado na selecao
-		optionsFilter[4] = "-V"; // Inversão da seleção, ou seja, remove todos os outros valores.
-		filter.setOptions(optionsFilter);
-
-		filter.setInputFormat(data);
-		Instances newData = Filter.useFilter(data, filter);
-
-		// Construindo o classificador
-		repTree.buildClassifier(newData);
-
-		Integer numIterations = 10; // Numero de iteracoes do crossValidator
-		Random randData = new Random(1); // indice do gerador de numeros aleatorios
-		Evaluation evalTree = evalModel(repTree, newData, numIterations, randData);
-		System.out.println("Resultado: \n" + evalTree.toSummaryString());
-
+		
+		System.out.println("Instancias corretamente classificadas;Percentagem de intancias corretamente classificadas;Instancias incorretamente classificadas;Percentagem de instancias incorretamente classificadas;Estatistica Kappa;Erro medio absoluto;Erro quadratico medio da raiz;Erro absoluto relativo;Erro quadratico relativo da raiz;Raiz media erro quadrado previo;Numero total de instancias;Taxa de erro");
+		
+		for (int i = 355; i <= 357; i++) {
+			String[] optionsFilter = new String[5];
+			optionsFilter[0] = "-C"; // Escolha do atributo a ser usado na selecao
+			optionsFilter[1] = "9"; // Indice do atributo usado na selecao
+			optionsFilter[2] = "-L"; // Escolha do valor do atributo a ser usado na selecao
+			optionsFilter[3] = i+""; // Indice do valor usado na selecao
+			optionsFilter[4] = "-V"; // Inversão da seleção, ou seja, remove todos os outros valores.
+			filter.setOptions(optionsFilter);
+	
+			filter.setInputFormat(data);
+			Instances newData = Filter.useFilter(data, filter);
+	
+			// Construindo o classificador
+			j48.buildClassifier(newData);
+	
+			Integer numIterations = 10; // Numero de iteracoes do crossValidator
+			Random randData = new Random(1); // indice do gerador de numeros aleatorios
+			Evaluation evalTree = evalModel(j48, newData, numIterations, randData);
+			//System.out.println("Resultado: \n" + evalTree.toSummaryString());
+			System.out.println(evalTree.correct() + ";" + evalTree.pctCorrect() + ";" + evalTree.incorrect() + ";" + evalTree.pctIncorrect() + ";" + evalTree.kappa() + ";" + evalTree.meanAbsoluteError() + ";" + evalTree.rootMeanSquaredError() + ";" + evalTree.relativeAbsoluteError() + ";" + evalTree.rootRelativeSquaredError() + ";" + evalTree.rootMeanPriorSquaredError() + ";" + evalTree.numInstances() + ";" + evalTree.errorRate());
+		}
 	}
 
 	/** Cria um objeto de avaliacao que aplica o classificador aos dados fornecidos.
