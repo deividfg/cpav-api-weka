@@ -79,6 +79,8 @@ https://medium.com/@cristianofurquim/10-algoritmos-de-aprendizagem-de-m%C3%A1qui
 
 http://portaldeconteudo.sbc.org.br/index.php/semish
 
+https://blog.even3.com.br/artigos-cientificos/
+
 2 - fundamentação do j48
 
 3 - implementação
